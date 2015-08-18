@@ -24,6 +24,6 @@ from django.contrib import admin
 from api.views import PatientView, PatientSearch
 
 urlpatterns = [
-    url('^Patient', PatientSearch.as_view(), name='patient_search'),
     url('^Patient/(?P<id>[0-9]+)', PatientView.as_view(), name='patient'),
+    url('^Patient', PatientSearch.as_view(), name='patient_search'),
 ]
