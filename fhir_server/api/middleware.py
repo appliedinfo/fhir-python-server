@@ -27,12 +27,12 @@ class FHIRRequestAuthorizationToken:
         """Validates the authorization of the request.
         """
         unauthorized = HttpResponse("""<h1>401 Unauthorized</h1>""",status=401)
-        if 'Authorization' not in request:
+        meta = getattr(request, 'META')
+        if 'HTTP_AUTHORIZATION' not in meta:
             return unauthorized
         try:
-            bearer, token = request['Authorization'].split(':')
+            bearer, token = meta['HTTP_AUTHORIZATION'].split('Bearer', 2)
         except:
             return unauthorized
-        if token == TEST_AUTH_TOKEN:
-            return request
-        return unauthorized
+        if token.strip() != TEST_AUTH_TOKEN:
+            return unauthorized
