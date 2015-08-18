@@ -48,7 +48,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    # 'api.middleware.FHIRRequestAuthorizationToken',
+    'api.middleware.FHIRRequestAuthorizationToken',
     'api.middleware.FHIRResponseHeader',
 )
 
