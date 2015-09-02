@@ -21,9 +21,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from api.views import PatientView, PatientSearch
+from api.views import PatientView, PatientSearch, SMARTOAuthMetaData
 
-urlpatterns = [
-    url('^Patient/(?P<id>[0-9]+)', PatientView.as_view(), name='patient'),
-    url('^Patient', PatientSearch.as_view(), name='patient_search'),
-]
+extension_regex = "(?P<extension>(\.json|\.xml)|)$"
+
+urlpatterns = (
+    url(r'^admin/', include(admin.site.urls)),
+
+    url('^Patient/(?P<id>[0-9]+){0}'.format(extension_regex), PatientView.as_view(), name='patient'),
+    url('^Patient{0}'.format(extension_regex), PatientSearch.as_view(), name='patient_search'),
+
+    # OAuth
+    url(r'auth/metadata', SMARTOAuthMetaData.as_view(), name='smart_metadata'),
+    url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+)
