@@ -189,3 +189,8 @@ STATIC_URL = '/static/'
 
 # CORS Allow Domains
 CORS_ORIGIN_ALLOW_ALL = True
+
+# AUTH
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/'

@@ -26,8 +26,14 @@ from api.views import PatientView, PatientSearch, SMARTOAuthMetaData
 extension_regex = "(?P<extension>(\.json|\.xml)|)$"
 
 urlpatterns = (
+    # Admin
     url(r'^admin/', include(admin.site.urls)),
 
+    # Login / Logout
+    url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout'),
+
+    # FHIR
     url('^Patient/(?P<id>[0-9]+){0}'.format(extension_regex), PatientView.as_view(), name='patient'),
     url('^Patient{0}'.format(extension_regex), PatientSearch.as_view(), name='patient_search'),
 
