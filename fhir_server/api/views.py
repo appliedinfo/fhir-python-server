@@ -5,7 +5,7 @@
 
 
 # Django
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.views.generic import View
 from django.core.urlresolvers import reverse
 
@@ -17,7 +17,14 @@ import json
 
 from .tmp import TMP_USER
 
-class PatientView(ReadWriteScopedResourceView):
+class FHIRScopedView(ReadWriteScopedResourceView):
+    """Overwites the 403 Response with a 401 when unauthorized."""
+    def dispatch(self, request, *args, **kwargs):
+        p = super(FHIRScopedView, self).dispatch(request, *args, **kwargs)
+        if isinstance(p, HttpResponseForbidden):
+            return HttpResponse(status=401)
+
+class PatientView(FHIRScopedView):
 
     required_scopes = ['user/*.read']
 
@@ -29,7 +36,7 @@ class PatientView(ReadWriteScopedResourceView):
     def get(self, request, id, extension=None):
         return HttpResponse(json.dumps(TMP_USER))
 
-class PatientSearch(ReadWriteScopedResourceView):
+class PatientSearch(FHIRScopedView):
 
     required_scopes = ['user/*.read']
 
