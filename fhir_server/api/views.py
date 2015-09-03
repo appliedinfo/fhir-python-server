@@ -23,6 +23,7 @@ class FHIRScopedView(ReadWriteScopedResourceView):
         p = super(FHIRScopedView, self).dispatch(request, *args, **kwargs)
         if isinstance(p, HttpResponseForbidden):
             return HttpResponse(status=401)
+        return p
 
 class PatientView(FHIRScopedView):
 
